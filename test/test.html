@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    console.log( new Error() instanceof Error);
+    console.log( new TypeError() instanceof Error);
+    console.log( new ReferenceError() instanceof Error);
+    console.log( new ReferenceError() instanceof Error);
+
+    console.log(new Error("1").message);
+
+    new Promise((resolve, reject)=>{
+        resolve(1);
+        reject(2);
+    }).then(reason => {
+        console.log("error"+reason);
+        throw 1;
+    }).catch(reason => console.log("error"+reason))
+
+</script>
+</body>
+</html>
