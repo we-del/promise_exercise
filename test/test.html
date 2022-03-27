@@ -6,21 +6,125 @@
 </head>
 <body>
 <script>
-    console.log( new Error() instanceof Error);
-    console.log( new TypeError() instanceof Error);
-    console.log( new ReferenceError() instanceof Error);
-    console.log( new ReferenceError() instanceof Error);
+    // console.log( new Error() instanceof Error);
+    // console.log( new TypeError() instanceof Error);
+    // console.log( new ReferenceError() instanceof Error);
+    // console.log( new ReferenceError() instanceof Error);
+    //
+    // console.log(new Error("1").message);
+    //
+    // new Promise((resolve, reject)=>{
+    //     resolve(1);
+    //     reject(2);
+    // }).then(reason => {
+    //     console.log("error"+reason);
+    //     throw 1;
+    // }).catch(reason => console.log("error"+reason))
 
-    console.log(new Error("1").message);
 
+    // 当promise为pending状态时，调用 then catch方法不会被处理，而是原样输出
+    // let promise = new Promise(()=>{
+    //     console.log("111");
+    // });
+    // console.log(promise);
+    // let p2 =  promise.then(value=>console.log(value),reason => console.log(reason));
+    // console.log(p2);
+
+    // let promise = new Promise((resolve, reject)=>{resolve(1)});
+    // promise.then(value=>{
+    //     console.log(value);
+    //     throw '有错误';
+    // }).catch(reason => console.log(reason));
+
+    //
+    // try {
+    //     throw "处理错误"
+    // } catch (e) {
+    //     console.log(e);
+    // }
+
+    // 抛出的错误对象是一个返回值
+    // function f() {
+    //     //throw "ww";
+    //    throw new Error("错误");
+    // }
+    //
+    // try {
+    //    let a = f();
+    //    console.log(a instanceof Error);
+    // } catch (e) {
+    //     console.log(e);
+    //     if(e instanceof Error){
+    //         console.log("Error函数抓取错误",e.message);
+    //     }else{
+    //         console.log("throw 抓取错误",e);
+    //     }
+    // }
+    // new Error("err");
+    // 尝试去捕获一个 hook error
+
+
+    // 测试在then() catch方法中返回promise对象
+    // let p = new Promise((resolve, reject) => {
+    //     resolve(1)
+    // });
+    // let cp = p.then((value) => {
+    //     console.log(value);
+    //     // return new Promise((resolve, reject) =>{
+    //     //     reject("error");
+    //     //
+    //     // });
+    //     return "成功";
+    // });
+    // console.log(p);
+    // console.log(cp);
+    // cp.catch(reason => console.log(reason))
+
+
+
+    // 执行顺序
+    // Promise.resolve(5).then(value => console.log(value)); // 4(微任务+函数调用)
+    //
+    // new Promise((resolve, reject) =>{ // (实例对象)
+    //     setTimeout(()=>{
+    //         console.log("我是 promise 里的定时器"); // 5
+    //     });
+    //     console.log("我是promise"); // 1
+    //
+    // });
+    // let a = ()=>{
+    //     console.log("我是全局的a() 方法"); // 2
+    // }
+    // setTimeout(()=>{console.log("我是全局 setInterval()");}) // 6
+    // a();
+    //
+    // console.log("我是全局"); // 3
+
+    setTimeout(()=>{
+        console.log("0");
+    })
     new Promise((resolve, reject)=>{
-        resolve(1);
-        reject(2);
-    }).then(reason => {
-        console.log("error"+reason);
-        throw 1;
-    }).catch(reason => console.log("error"+reason))
-
+        console.log("1");
+        resolve();
+    }).then(()=>{
+        console.log("2");
+        new Promise((resolve, reject)=>{
+            console.log("3");
+            resolve();
+        }).then(()=>{
+            console.log("4");
+        }).then(()=>{
+            console.log("5");
+        });
+    }).then(()=>{
+        console.log("6");
+    });
+    new Promise((resolve, reject)=>{
+        console.log("7");
+        resolve();
+    }).then(()=>{
+        console.log("8");
+    });
 </script>
 </body>
 </html>
