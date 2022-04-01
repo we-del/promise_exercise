@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    /**
+     * @description: 使用类封装一个 axios的 get 和 post 请求
+     * @tips: option 是一个对象 包含 url ,method ,params信息(携带的参数)
+     * */
+    class Axios {
+        constructor() {
+        }
+
+        sendReq(obj) {
+            return new Promise((resolve, reject) => {
+                let xml = new XMLHttpRequest();
+                console.log(obj);
+                let {url, params, method} = obj;
+                xml.onreadystatechange = () => {
+                    if (xml.status === 200 && xml.readyState === 4) {
+                        resolve(xml.response);
+                    }
+                }
+                xml.onerror = (e) => {
+                    reject(e);
+                }
+                xml.open(method, url);
+                xml.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                let data = "";
+                for (const k in params) {
+                    data += k + "=" + params[k] + "&";
+                }
+                data = data.substr(0, data.length - 1);
+                console.log(data);
+                xml.send(data);
+            });
+
+        }
+
+        get(url, obj) {
+            return new Promise((resolve, reject) => {
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = () => {
+                    if (xhr.status === 200 && xhr.readyState === 4) {
+                        resolve(xhr.response);
+                    }
+                }
+                xhr.onerror = (e) => {
+                    reject(e);
+                }
+
+                xhr.open("get", url);
+                xhr.send(obj.params);
+            });
+        }
+
+        post(url, data, obj = null) {
+            return new Promise((resolve, reject) => {
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = () => {
+                    if (xhr.status === 200 && xhr.readyState === 4) {
+                        resolve(xhr.response);
+                    }
+                }
+                xhr.onerror = (e) => {
+                    reject(e);
+                }
+
+                xhr.open("post", url);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send(data);
+            });
+        }
+    }
+
+    let axios = new Axios();
+    // axios.sendReq({
+    //     url: "http://127.0.0.1:9999/login",
+    //     method: "post",
+    //     params: {
+    //         user: "zs",
+    //         pwd: 123456
+    //     }
+    // }).then(value => console.log(value), reason => console.log(reason));
+    let res = axios.post("http://127", {name: 'z', sex: '男'});
+    res.catch(reason => {console.log(reason);})
+</script>
+</body>
+</html>
